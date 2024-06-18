@@ -3,6 +3,12 @@
     require_once 'lib/common.php';
 
     session_start();
+
+    //if user already logged in, just send them home
+    if(isLoggedIn()){
+        redirectAndExit('index.php');
+    }
+
     //handle form posting
     $username = '';
     if($_POST){

@@ -71,7 +71,7 @@ function addComment(PDO $pdo, $postId, array $commentData)
         $result = $stmt->execute(
             array_merge(
                 $commentData,
-                array('post_id' => $postId, 'created_at' => getRightNowSqlDate(), )
+                array('post_id' => $postId, 'created_at' => getRightNowSqlDate(),)
             )
         );
         if ($result === false) {
@@ -81,4 +81,32 @@ function addComment(PDO $pdo, $postId, array $commentData)
             }
         }
     }
+}
+
+/**
+ * tries to delete the specified post
+ * @param PDO $pdo
+ * @param integer $postId
+ * @return boolean returns true on successful deletion
+ * @throws exception
+ */
+function deletePost(PDO $pdo, $postId)
+{
+    //prepare the query
+    $sql = "
+        DELETE FROM
+            post
+        WHERE
+            id = :id
+    ";
+    $stmt = $pdo->prepare($sql);
+    if ($stmt === false) {
+        throw new Exception("Could not prepare deletion query");
+    }
+    $result = $stmt->execute(
+        array(
+            'id' => $postId
+        )
+    );
+    return $result !== false;
 }

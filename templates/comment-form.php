@@ -56,5 +56,5 @@
             cols="70"
         ><?php echo escapeHTML($commentData['text'])?></textarea>
     </p>
-    <input type="submit" value="Submit comment" />
+    <input type="submit" name="submit-comment" value="Submit comment" />
 </form>

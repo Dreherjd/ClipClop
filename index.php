@@ -36,7 +36,7 @@ $notFound = isset($_GET['not-found']);
 
     <div class="row">
         <?php foreach ($post as $post) : ?>
-            <div class="col-4">
+            <div class="col-3" style="margin-top:10px;">
                 <a href="view-post.php?post_id=<?php echo $post['id'] ?>">
                     <div class="card text-white bg-primary mb-3 h-100" style="max-width: 20rem;">
                         <h4 class="card-header"><?php echo escapeHTML($post['title']) ?></h4>

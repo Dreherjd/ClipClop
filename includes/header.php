@@ -17,7 +17,8 @@
         </div>
         <form class="d-flex">
             <?php if (isLoggedIn()) : ?>
-                <a href="logout.php" class="btn btn-secondary">Log in</a>
+                <a href="edit-post.php" class="btn btn-secondary">New Post</a>
+                <a href="logout.php" class="btn btn-secondary">Log out</a>
             <?php else : ?>
                 <a href="login.php" class="btn btn-secondary">Log in</a>
             <?php endif ?>

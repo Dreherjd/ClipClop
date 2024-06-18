@@ -22,6 +22,7 @@ if (!$row) {
 
 $errors = null;
 if ($_POST) {
+    //comment stuff
     $commentData = array(
         'name' => $_POST['comment-name'],
         'website' => $_POST['comment-website'],
@@ -36,6 +37,14 @@ if ($_POST) {
     if (!$errors) {
         redirectAndExit('view-post.php?post_id=' . $postId);
     }
+    if (isset($_POST['delete-post'])) {
+        $keys = array_keys($_POST['delete-post']);
+        $deletePostId = $keys[0];
+        if ($deletePostId) {
+            deletePost($pdo, $postId);
+            redirectAndExit('index.php');
+        }
+    }
 } else {
     $commentData = array(
         'name' => '',
@@ -43,6 +52,7 @@ if ($_POST) {
         'text' => '',
     );
 }
+
 
 //swap carriage returns for paragraph breaks
 $bodyText = escapeHTML($row['body']);
@@ -62,11 +72,11 @@ $paraText = str_replace("\n", "<p></p>", $bodyText);
             <p class="card-text"><?php echo $paraText ?></p>
         </div>
     </div>
-
-    <h4>Comments</h4>
+    <?php if (isLoggedIn()) : ?>
+        <a href="edit-post.php?post_id=<?php echo $postId ?>" class="btn btn-primary">Edit</a>
+        <input type="submit" class="btn btn-primary" name="delete-post['<?php echo $postId ?>']" value="Delete" />
+    <?php endif; ?>
     <?php foreach (getCommentsByPost($pdo, $postId) as $comment) : ?>
-        <?php // For now, we'll use a horizontal rule-off to split it up a bit 
-        ?>
         <hr />
         <div class="comment">
             <div class="comment-meta">
@@ -75,12 +85,10 @@ $paraText = str_replace("\n", "<p></p>", $bodyText);
                 <?php echo convertSqlDate($comment['created_at']) ?>
             </div>
             <div class="comment-body">
-                <?php // This is already escaped 
-                ?>
                 <h5><?php echo convertNewlinesToParagraphs($comment['text']) ?></h5>
             </div>
         </div>
     <?php endforeach ?>
     <?php require 'templates/comment-form.php' ?>
 </div>
-<?php include("includes/footer.php") ?>
+<?php include("includes/footer.php"); ?>
